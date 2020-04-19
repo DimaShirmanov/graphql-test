@@ -1,20 +1,22 @@
 const express = require('express');
-const app = express();
 const graphqlHTTP = require('express-graphql');
 
-const schema = require('../schema/schema');
+const app = express();
 const config = global.config = require('../config.json');
-const db = require('../db');
+require('../db');
 
 global.mock = require('../mock.json');
 
-app.use('/graphql', graphqlHTTP({
-	schema,
-	graphiql: true
-}));
+Promise.all([
+	db.engine.sync()
+]).then(_ => {
 
-const PORT = config.port;
+	app.use('/graphql', graphqlHTTP({
+		schema: require('../schema/schema'),
+		graphiql: true
+	}));
 
-app.listen(PORT, err => {
-	err ? console.log(err) : console.log('Server online');
+	app.listen(config.port, err => {
+		err ? console.log(err) : console.log('Server online');
+	});
 });

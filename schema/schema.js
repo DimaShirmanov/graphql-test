@@ -17,14 +17,22 @@ const Query = new GraphQLObjectType({
 			type: productType,
 			args: { id: { type: GraphQLID } },
 			resolve(_, args) {
-				return global.mock.products.find(item => item.id == args.id);
+				return global.db.findAll(global.db.models.product, {
+					where: {
+						id: args.id
+					}
+				})
 			}
 		},
 		categorys: {
 			type: categoryType,
 			args: { id: { type: GraphQLID } },
 			resolve(_, args) {
-				return global.mock.categorys.find(item => item.id == args.id);
+				return global.db.findAll(global.db.models.category, {
+					where: {
+						id: args.id
+					}
+				})
 			}
 		}
 	}
