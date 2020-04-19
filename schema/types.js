@@ -8,6 +8,8 @@ const {
     idType
 } = require('./typeFields');
 
+const { models } = global.db;
+
 const ProductType = new GraphQLObjectType({
     name: 'Product',
     description: 'it is a product',
@@ -26,11 +28,7 @@ const CategoryType = new GraphQLObjectType({
         products: {
             type: new GraphQLList(ProductType),
             resolve(parent, _) {
-                return global.db.getByUuid(global.db.category, {
-                    where: {
-                        id: parent.categoryId
-                    }
-                });
+                return models.category.findOne({ raw: true, where: { id: args.categoryId } })
             }
         }
     })
