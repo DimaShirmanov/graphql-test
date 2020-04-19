@@ -7,8 +7,6 @@ const {
 const {
 	categoryType,
 	productType,
-	products,
-	categorys
 } = require('./types');
 
 
@@ -18,15 +16,15 @@ const Query = new GraphQLObjectType({
 		product: {
 			type: productType,
 			args: { id: { type: GraphQLID } },
-			resolve(parent, args) {
-				return products.find(item => item.id == args.id);
+			resolve(_, args) {
+				return global.mock.products.find(item => item.id == args.id);
 			}
 		},
 		categorys: {
 			type: categoryType,
 			args: { id: { type: GraphQLID } },
-			resolve(parent, args) {
-				return categorys.find(item => item.id == args.id);
+			resolve(_, args) {
+				return global.mock.categorys.find(item => item.id == args.id);
 			}
 		}
 	}
