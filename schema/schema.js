@@ -9,6 +9,7 @@ const {
 	productType,
 } = require('./types');
 
+const { models } = global.db;
 
 const Query = new GraphQLObjectType({
 	name: 'Query',
@@ -17,22 +18,14 @@ const Query = new GraphQLObjectType({
 			type: productType,
 			args: { id: { type: GraphQLID } },
 			resolve(_, args) {
-				return global.db.findAll(global.db.models.product, {
-					where: {
-						id: args.id
-					}
-				})
+				return models.product.findOne({ raw: true, where: { id: args.id } });
 			}
 		},
 		categorys: {
 			type: categoryType,
 			args: { id: { type: GraphQLID } },
 			resolve(_, args) {
-				return global.db.findAll(global.db.models.category, {
-					where: {
-						id: args.id
-					}
-				})
+				return models.category.findOne({ raw: true, where: { id: args.id } })
 			}
 		}
 	}

@@ -26,7 +26,7 @@ const CategoryType = new GraphQLObjectType({
         products: {
             type: new GraphQLList(ProductType),
             resolve(parent, _) {
-                return global.db.findAll(global.db.category, {
+                return global.db.getByUuid(global.db.category, {
                     where: {
                         id: parent.categoryId
                     }
