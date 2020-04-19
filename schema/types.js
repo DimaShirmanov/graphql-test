@@ -1,11 +1,12 @@
 const {
-    GraphQLString,
-    GraphQLID,
     GraphQLList,
     GraphQLObjectType
 } = require('graphql');
-const id = { type: GraphQLID };
-const string = { type: GraphQLString };
+
+const {
+    stringType,
+    idType
+} = require('./typeFields');
 
 const products = [
     { id: 1, name: "Молоко", categoryId: 123 },
@@ -27,21 +28,21 @@ const categorys = [
 const ProductType = new GraphQLObjectType({
     name: 'Product',
     fields: () => ({
-        id: id,
-        name: string,
-        articul: string
+        id: idType,
+        name: stringType,
+        articul: stringType
     })
 });
 
 const CategoryType = new GraphQLObjectType({
     name: 'Category',
     fields: () => ({
-        id: id,
-        name: string,
+        id: idType,
+        name: stringType,
         products: {
             type: new GraphQLList(ProductType),
-            resolve(parent, args) {
-                return products.filter(item => item.categoryId == parent.id);
+            resolve(parent, _) {
+                return global.mock.products.filter(item => item.categoryId == parent.id);
             }
         }
     })
